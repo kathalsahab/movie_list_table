@@ -5,6 +5,7 @@ from movie_list.commands import movie_list_cli
 import pymysql
 from movie_list import extensions
 from movie_list.ping.v1 import ping_api_v1
+from movie_list.design.models import Movies
 
 api_blueprint = Blueprint("api", __name__, url_prefix="/api")
 
