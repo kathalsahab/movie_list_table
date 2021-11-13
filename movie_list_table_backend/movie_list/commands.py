@@ -1,5 +1,6 @@
 import logging
 from flask.cli import AppGroup, with_appcontext
+from movie_list.commands_seed_data import create_genre_data
 
 from movie_list.extensions import db
 
@@ -22,3 +23,6 @@ def deploy():
 
     # Create Database
     db.create_all()
+
+    # Seed fill genre table
+    create_genre_data()

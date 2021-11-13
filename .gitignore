@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+movie_list_table_backend/.vscode/settings.json

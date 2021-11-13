@@ -156,6 +156,6 @@ class RecordNotFound(Exception):
         return "Record Not Found"
 
 
-class CategoryAlreadyExists(Exception):
+class MovieAlreadyExists(Exception):
     def __str__(self):
-        return "Category Already Exists"
+        return "Movie Already Exists"
