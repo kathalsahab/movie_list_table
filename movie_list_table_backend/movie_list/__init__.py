@@ -5,6 +5,7 @@ from movie_list.commands import movie_list_cli
 import pymysql
 from movie_list import extensions
 from movie_list.ping.v1 import ping_api_v1
+from movie_list.movie.v1 import movie_api_v1
 from movie_list.design.models import Movies
 
 api_blueprint = Blueprint("api", __name__, url_prefix="/api")
@@ -28,6 +29,7 @@ rest_api = RestX_Api(
 )
 
 rest_api.add_namespace(ping_api_v1, path="/v1")
+rest_api.add_namespace(movie_api_v1, path="/v1")
 
 # mysql driver required for sqlalchemy
 pymysql.install_as_MySQLdb()
@@ -46,7 +48,6 @@ def create_app():
 
     # load env specific configs
     app.config.from_object(get_config_object_path())
-    print(app.config["SQLALCHEMY_DATABASE_URI"])
 
     # initialize all extensions
     extensions.init_extensions(app)

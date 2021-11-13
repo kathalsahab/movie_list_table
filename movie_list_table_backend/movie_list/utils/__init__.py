@@ -1,7 +1,8 @@
 """Generic Utility Functions
 """
 from typing import Union
-
+import re
+import datetime
 from werkzeug.exceptions import (
     NotFound,
     BadRequest,
@@ -17,8 +18,7 @@ DESCENDING_VALUES = ["desc", "DESC", -1, "des", "DES", "D", "d"]
 
 
 class Response:
-    """Generic Response class to envelope the API response.
-    """
+    """Generic Response class to envelope the API response."""
 
     @staticmethod
     def success(
@@ -128,6 +128,30 @@ def check_for_string(data):
     return data
 
 
+def check_for_title(data):
+    # Must be a string
+    check_for_string(data)
+    len_regex = re.compile(r"^[a-zA-Z]{3,60}$")
+    print(data)
+    if len_regex.findall(data) == []:
+        raise ValueError("String length must be between 3 - 60")
+    return data
+
+
+def check_for_rating(data):
+    if float(data) < 0 or float(data) > 10:
+        raise ValueError("Decimal value must be between 0-10")
+    return data
+
+
+def check_for_datetime(date):
+    try:
+        date = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S").date()
+    except Exception as exc:
+        raise ValueError("Time data doesnot match format '%Y-%m-%dT%H:%M:%S'")
+    return date
+
+
 def strict_list(arg):
     if not isinstance(arg, list):
         raise ValueError("Argument must be of type list")
@@ -156,6 +180,11 @@ class RecordNotFound(Exception):
         return "Record Not Found"
 
 
-class CategoryAlreadyExists(Exception):
+class MovieAlreadyExists(Exception):
     def __str__(self):
-        return "Category Already Exists"
+        return "Movie Already Exists"
+
+
+class GenreDoesNotExists(Exception):
+    def __str__(self):
+        return "User does not exists"
