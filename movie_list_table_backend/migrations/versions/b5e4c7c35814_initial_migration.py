@@ -21,10 +21,10 @@ def upgrade():
     op.create_table('movies',
     sa.Column('movie_id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=255), nullable=False),
-    sa.Column('release_date', sa.Integer(), nullable=True),
+    sa.Column('release_date', sa.DateTime(), nullable=True),
     sa.Column('genre', sa.String(length=255), nullable=False),
-    sa.Column('price', sa.DECIMAL(), nullable=True),
-    sa.Column('rating', sa.DECIMAL(), nullable=True),
+    sa.Column('price', sa.DECIMAL(10,5), nullable=True),
+    sa.Column('rating', sa.DECIMAL(10,5), nullable=True),
     sa.Column('created_date', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('modified_date', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('movie_id')

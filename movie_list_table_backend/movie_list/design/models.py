@@ -48,9 +48,9 @@ class Movies(db.Model):
 
     movie_id = Column(Integer, primary_key=True)
     title = Column(String(255), nullable=False)
-    release_date = Column(Integer)
-    price = Column(DECIMAL)
-    rating = Column(DECIMAL)
+    release_date = Column(DateTime)
+    price = Column(DECIMAL(10, 5))
+    rating = Column(DECIMAL(10, 5))
     is_active = Column(Boolean, default=True)
     genre_id = Column(Integer, ForeignKey(Genre.genre_id), nullable=False)
     created_date = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
@@ -58,7 +58,7 @@ class Movies(db.Model):
         DateTime, server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     )
 
-    genre = relationship("Genres", backref="movie", lazy=True)
+    genre = relationship("Genre", backref="movie", lazy=True)
 
     @classmethod
     def lookup(cls, title):
@@ -69,35 +69,38 @@ class Movies(db.Model):
         return self.genre.genre_name
 
     @staticmethod
-    def create_movie(title, release_date, genre, price=None, rating=None):
-        movie = Movies.query.filter_by(title=title).first()
+    def create_movie(title, release_date, genre_id, price=None, rating=None):
+        movie = Movies.query.filter_by(title=title, is_active=True).first()
         if movie:
             return
         movie = Movies()
         movie.title = title
-        movie.release_date = release_date
-        movie.genre = genre
+        if release_date:
+            movie.release_date = release_date
+        movie.genre_id = genre_id
         if price:
             movie.price = price
         if rating:
             movie.rating = rating
         db.session.add(movie)
+        db.session.commit()
         return movie
 
     @staticmethod
-    def update_movie(movie_id, title, release_date, genre, price=None, rating=None):
-        movie = Movies.query.filter_by(movie_id=movie_id).first()
+    def update_movie(movie_id, title, release_date, genre_id, price=None, rating=None):
+        movie = Movies.query.filter_by(movie_id=movie_id, is_active=True).first()
         if not movie:
             raise RecordNotFound
         if title:
             movie.title = title
         if release_date:
             movie.release_date = release_date
-        if genre:
-            movie.genre = genre
+        if genre_id:
+            movie.genre_id = genre_id
         if price:
             movie.price = price
         if rating:
             movie.rating = rating
         db.session.add(movie)
+        db.session.commit()
         return movie
