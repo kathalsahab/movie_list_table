@@ -131,9 +131,8 @@ def check_for_string(data):
 def check_for_title(data):
     # Must be a string
     check_for_string(data)
-    len_regex = re.compile(r"^[a-zA-Z]{3,60}$")
-    print(data)
-    if len_regex.findall(data) == []:
+    len_data = len(data)
+    if len_data < 3 or len_data > 60:
         raise ValueError("String length must be between 3 - 60")
     return data
 
