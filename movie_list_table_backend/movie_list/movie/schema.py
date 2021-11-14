@@ -14,6 +14,9 @@ class MoviesSchema(mm.SQLAlchemyAutoSchema):
     class Meta:
         model = Movies
 
+    price = fields.Float()
+    rating = fields.Float()
+
     genre = fields.Nested(GenreSchema())
 
 
